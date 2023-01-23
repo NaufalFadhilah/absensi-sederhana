@@ -1,14 +1,10 @@
 <?php
 include("connect.php");
-include("users_class.php");
+include("Users_class.php");
 
 $user = new Users();
-
-
-
 if(isset($_POST['login'])){
 $user->set_login_data($_POST['user_id'], $_POST['password']);
-
 $user_id = $user->get_user_id();
 $password = $user->get_password();
 
@@ -26,7 +22,7 @@ if($result->num_rows > 0){
         header("location:./dashboard?message=anda telah berhasil login");
     }
 } else {
-    header("location:index.php?message=masukan data yang benar👍");
+    header("location:index.php?message=masukan data yang benar!!!"); 
 }
 }
 

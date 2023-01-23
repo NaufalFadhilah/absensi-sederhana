@@ -39,7 +39,11 @@ if(isset($_POST['logout'])){
 <i>Halo <?php echo $nama_lengkap; ?></i>
 <br>
 <p>Status : <?php echo $role; ?></p>
-
+<br>
+<?php
+// Data absen
+include("absensi.php")
+?>
 <form action="" method="POST">
 <button type="submit" name="logout">logout</button>
 </form>
