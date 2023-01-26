@@ -18,7 +18,8 @@ $result = $db->query($sql);
 
 
 if($result === TRUE){
-    echo "berhasil";
+    header('location:index.php?message=anda berhasil absen');
+    
 } else {
     echo "gagal";
 }
