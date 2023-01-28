@@ -19,7 +19,7 @@ if($result->num_rows > 0){
         $_SESSION['role'] = $data['role'];
         $_SESSION['status'] = "login";
 
-        header("location:./dashboard?message=anda telah berhasil login");
+        header("location:./dashboard?");
     }
 } else {
     header("location:index.php?message=masukan data yang benar!!!"); 
