@@ -19,7 +19,12 @@ if($result->num_rows > 0){
         $_SESSION['role'] = $data['role'];
         $_SESSION['status'] = "login";
 
-        header("location:./dashboard?");
+        if($data['role'] == "admin"){
+            header("location:dashboard/index-admin.php?message=Selamat datang Admin $data[nama_lengkap]");
+        } else{
+        header("location:dashboard/index.php");
+
+        }
     }
 } else {
     header("location:index.php?message=masukan data yang benar!!!"); 

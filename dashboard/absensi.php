@@ -18,7 +18,8 @@
 
 </form>
 
-<table border="1" class="">
+<table border="" class="table">
+<tbody>
    
     <tr>
         <th class="bg-primary text-light">Tanggal</th>
@@ -42,47 +43,59 @@ $sql = "SELECT * FROM absen WHERE user_id='$user_id'";
 $result = $db->query($sql);
 $tgl = date('Y-m-d');
 $time = date('H:i:s');
+$tepat_masuk = date('07: 30: 00');
+$tepat_keluar = date('15 : 40 :00');
 
 if(isset($_POST['clockout'])){
     $sql = "UPDATE absen SET jam_keluar ='$time' WHERE user_id= '$user_id' AND tgl='$tgl'";
 
     $clockout = $db->query($sql);
     if($clockout==TRUE ){
-        session_start();
-        session_destroy();
-        header('location:../index.php?message=absensi hari ini telah berakhir');
+       header("location:index.php?message=Berhasil Clockout, selamat berisitirahat");
     } else {
         echo "terjadi kesalahan";
     }
 }
 
 while($data = $result->fetch_assoc()){
+    echo "";
    echo "<tr>";
     echo "<td>". $data['tgl'] . " </td>";
     echo "<td>". $data['jam_masuk'] . " </td>";
     if(empty($data['jam_keluar']) && !empty($data['jam_masuk']) && $data['tgl'] == $tgl){
         echo '<td>
-        <form method="POST">        
-        <button name="clockout" type="submit">Absen keluar</button>
-        </form>
+        <form method=POST>   
+        <button name="clockout" type="">Absen keluar</button>
+       </form>
         </td>';
     }else {
-    echo "<td>". $data['jam_keluar'] . " </td>";
+        echo "<td>" . $data['jam_keluar'] . "</td>";
     }
-    echo "<td>-</td>";
-   echo "</tr>";
+    if($data['jam_masuk'] <= $tepat_masuk){
+        echo "<td>Tepat waktu</td>";
+    } else {
+        echo "<td>Terlambat</td>";
+    }
+ 
+    echo "</tr>";
+    echo "";
 }
 ?>
+</tbody>
 </table>
 
 
-<style> table {
-  width: 80%;
+<style> 
+table {
+  width: 80%!important;
   background-color: lightblue;
   margin: auto;
 
 } 
-
+tbody {
+    height: 50vh!important;
+    overflow: scroll;
+}
 td,
 tr {
   border: 1px solid rgb(255, 255, 255);
