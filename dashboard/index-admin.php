@@ -1,6 +1,9 @@
 <?php
-echo "hai admin";
-
+session_start();
+if(isset($_POST['logout'])){
+    session_destroy();
+    header("location:../index.php?message=anda telah logout");
+}
 ?>
 
 
@@ -16,14 +19,28 @@ echo "hai admin";
       rel="stylesheet"
       href="../bootstrap/css/bootstrap.css"
     />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-        <?php
-        if(isset($_GET['message'])){
-            echo $_GET['message'];
-        }
-        ?>
+<nav class="navbar bg-light d-flex">
+  <div class="container-fluid d-flex flex-row">
+    <a class="navbar-brand"><h2>Dashboard</h2></a> <form class="d-flex" role="search" method="POST">
+      <button class="btn btn-outline-success" name="logout" type="submit">Logout</button>
+
+ <p class="nama">Halo <b><?php echo $_SESSION['nama_lengkap']; ?></b></p> 
+ <p class="nama fw-lighter">(<?php echo $_SESSION['role']; ?>)</p>
+    </form>
+
+  </div>
+
+</nav>
+    <div class="mx-auto mb-5 mt-5">
+        <form class="d-flex justify-content-center align-center gap-4" action="" method="POST" >
+           <div> <p class="fs-5">Lihat pada tanggal :</p></div>
+<input class="input" type="date" name="first" value="tanggal">
+<button type="submit" name="sort" class="btn btn-primary" value="Klik">Klik</button>
+</form>
+
     </div>
 <table class="table">
     <tbody>
@@ -38,22 +55,53 @@ echo "hai admin";
 
         <?php
         include("../connect.php");
-        session_start();
         $user_id = $_SESSION['user_id'];
 
         $sql = "SELECT * FROM users JOIN absen ON users.user_id = absen.user_id";
         
         $result = $db->query($sql);
 
-        while($data = $result->fetch_assoc()){
-            echo "<tr>";
-            echo "<td>" .$data['id'] ."</td>";
-            echo "<td>" .$data['nama_lengkap'] ."</td>";
-            echo "<td>" .$data['role'] ."</td>";
-            echo "<td>" .$data['tgl'] ."</td>";
-            echo "<td>" .$data['jam_masuk'] ."</td>";
-            echo "<td>" .$data['jam_keluar'] ."</td>";
-            echo "</tr>";
+        if (isset($_POST['sort']) && $_POST['first'] ==  NULL) {
+            while($data = $result->fetch_assoc()){
+                echo "<tr>";
+                echo "<td>" .$data['id'] ."</td>";
+                echo "<td>" .$data['nama_lengkap'] ."</td>";
+                echo "<td>" .$data['role'] ."</td>";
+                echo "<td>" .$data['tgl'] ."</td>";
+                echo "<td>" .$data['jam_masuk'] ."</td>";
+                echo "<td>" .$data['jam_keluar'] ."</td>";
+                echo "</tr>";
+            }
+        }
+        else if (isset($_POST['sort'])){
+            $first = $_POST['first'];
+            $sql = "SELECT * FROM users JOIN absen ON users.user_id = absen.user_id AND tgl='$first'";
+            $result = $db->query($sql);
+            while($data = $result->fetch_assoc()){
+                echo "<tr>";
+                echo "<td>" .$data['id'] ."</td>";
+                echo "<td>" .$data['nama_lengkap'] ."</td>";
+                echo "<td>" .$data['role'] ."</td>";
+                echo "<td>" .$data['tgl'] ."</td>";
+                echo "<td>" .$data['jam_masuk'] ."</td>";
+                echo "<td>" .$data['jam_keluar'] ."</td>";
+                echo "</tr>";
+            }
+        }  else {
+     
+
+                while($data = $result->fetch_assoc()){
+                    echo "<tr>";
+                    echo "<td>" .$data['id'] ."</td>";
+                    echo "<td>" .$data['nama_lengkap'] ."</td>";
+                    echo "<td>" .$data['role'] ."</td>";
+                    echo "<td>" .$data['tgl'] ."</td>";
+                    echo "<td>" .$data['jam_masuk'] ."</td>";
+                    echo "<td>" .$data['jam_keluar'] ."</td>";
+                    echo "</tr>";
+                
+            }
+            
         }
         
         ?>
